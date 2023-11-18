@@ -1,11 +1,122 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proyecto SIS310</title>
+    <title>Tabla Simple</title>
+   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <p>Hola mundo</p>
+    <h1><CENTER>PROYECTO DEL OVANDO PINCHE PROYECTO</CENTER></h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th></th>
+                <th>MAQUINA 1</th>
+                <th>MAQUINA 2</th>
+                <th>MAQUINA 3</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>CAPACIDAD</td>
+                <td><input type="number" placeholder="Ingrese datos numéricos" /></td>
+                <td><input type="number" placeholder="Ingrese datos numéricos" /></td>
+                <td><input type="number" placeholder="Ingrese datos numéricos" /></td>
+            </tr>
+            <tr>
+                <td>UNIDADES/DÍA</td>
+                <td><input type="number" placeholder="Ingrese datos numéricos" /></td>
+                <td><input type="number" placeholder="Ingrese datos numéricos" /></td>
+                <td><input type="number" placeholder="Ingrese datos numéricos" /></td>
+            </tr>
+            <tr>
+                <td>COSTO/UNIDAD</td>
+                <td><input type="number" placeholder="Ingrese datos numéricos" /></td>
+                <td><input type="number" placeholder="Ingrese datos numéricos" /></td>
+                <td><input type="number" placeholder="Ingrese datos numéricos" /></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Inputs Adicionales</h2>
+    <div class="input-container">
+        <label for="stockInicial">STOCK INICIAL:</label>
+        <input type="number" id="stockInicial" placeholder="Ingrese datos numéricos" />
+
+        <label for="stockSeguridad">STOCK DE SEGURIDAD:</label>
+        <input type="number" id="stockSeguridad" placeholder="Ingrese datos numéricos" />
+
+        <label for="costoUnitarioAlmacen">COSTO UNITARIO DE ALMACÉN:</label>
+        <input type="number" id="costoUnitarioAlmacen" placeholder="Ingrese datos numéricos" />
+
+        <label for="costoUnitarioRetraso">COSTO UNITARIO POR RETRASO:</label>
+        <input type="number" id="costoUnitarioRetraso" placeholder="Ingrese datos numéricos" />
+    </div>
+
+    <h2>Nueva Tabla</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>MES</th>
+                <th>DIAS LABORALES</th>
+                <th>DEMANDA</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Enero</td>
+                <td><input type="number" placeholder="Días laborales" /></td>
+                <td><input type="number" placeholder="Demanda" /></td>
+            </tr>
+            <tr>
+                <td>Febrero</td>
+                <td><input type="number" placeholder="Días laborales" /></td>
+                <td><input type="number" placeholder="Demanda" /></td>
+            </tr>
+            <tr>
+                <td>Marzo</td>
+                <td><input type="number" placeholder="Días laborales" /></td>
+                <td><input type="number" placeholder="Demanda" /></td>
+            </tr>
+            <tr>
+                <td>Abril</td>
+                <td><input type="number" placeholder="Días laborales" /></td>
+                <td><input type="number" placeholder="Demanda" /></td>
+            </tr>
+            <tr>
+                <td>Mayo</td>
+                <td><input type="number" placeholder="Días laborales" /></td>
+                <td><input type="number" placeholder="Demanda" /></td>
+            </tr>
+            <tr>
+                <td>Junio</td>
+                <td><input type="number" placeholder="Días laborales" /></td>
+                <td><input type="number" placeholder="Demanda" /></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="button-container">
+        <button onclick="calcularProduccionPromedio()">Produccion promedio igual a la media</button>
+        <button onclick="calcularStockCero()">Stock 0</button>
+        <button onclick="calcularStockSeguridad()">Stock de seguridad</button>
+    </div>
+
+    <script>
+        function calcularProduccionPromedio() {
+            // Lógica para calcular la producción promedio igual a la media
+        }
+
+        function calcularStockCero() {
+            // Lógica para calcular el stock igual a cero
+        }
+
+        function calcularStockSeguridad() {
+            // Lógica para calcular el stock de seguridad
+        }
+    </script>
+
 </body>
 </html>

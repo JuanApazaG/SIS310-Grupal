@@ -1,0 +1,63 @@
+/* Estilos generales */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+/* Estilos para las tablas */
+table {
+    width: 100%;
+    max-width: 800px; /* Ajusta según tus necesidades */
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+
+/* Estilos para los contenedores */
+.input-container,
+.button-container {
+    display: flex;
+    flex-wrap: wrap; /* Ajusta el contenido si no cabe en una línea */
+    justify-content: center; /* Centra horizontalmente */
+    margin-bottom: 20px;
+}
+
+/* Estilos para los botones */
+button {
+    padding: 10px;
+    margin: 0 5px; /* Ajusta el margen según tus necesidades */
+    font-size: 14px;
+    background-color: #008CBA;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #005A80;
+}
+
+/* Estilos para las animaciones (ejemplo) */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Aplicar animación a un elemento */
+.animated-element {
+    animation: fadeIn 1s ease-out;
+}
