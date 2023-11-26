@@ -109,7 +109,9 @@
                 <th></th>
                 <th></th>
                 <th></th>
+                <th></th> <!-- New column for Produccion total -->
                 <th colspan="3">Produccion mensual</th>
+                
             </tr>
             <tr>
                 <th>MES</th>
@@ -119,20 +121,19 @@
                 <th>Capacidad Total</th>
                 <th>Stock</th>
                 <th>Demanda corregida</th>
+                <th>Produccion total</th> <!-- New column header -->
                 <th>Maquina 1</th>
                 <th>Maquina 2</th>
                 <th>Maquina 3</th>
-                <th>Produccion total</th>
             </tr>
         </thead>
         <tbody>
-            <!-- Los resultados se llenarán aquí -->
+            <!-- Results will be filled here -->
         </tbody>
     </table>
 
     <script>
         function calcularProduccionPromedio() {
-            // Obtener los valores de los días y costos ingresados por el usuario
             var dias = [
                 document.getElementById("dias1").value,
                 document.getElementById("dias2").value,
@@ -142,11 +143,10 @@
                 document.getElementById("dias6").value
             ];
 
-            // Validar que los días laborales estén entre 10 y 31
             for (var i = 0; i < dias.length; i++) {
                 if (isNaN(dias[i]) || dias[i] < 10 || dias[i] > 31) {
                     alert("Ingrese días laborales válidos (entre 10 y 31) para el mes " + obtenerNombreMes(i + 1));
-                    return; // Detener la ejecución si los días no son válidos
+                    return;
                 }
             }
 
@@ -156,15 +156,13 @@
                 document.getElementById("unidades3").value
             ];
 
-            // Validar que todos los demás datos sean enteros positivos
             for (var i = 0; i < unidades.length; i++) {
                 if (isNaN(unidades[i]) || unidades[i] < 0 || unidades[i] % 1 !== 0) {
                     alert("Ingrese valores válidos (enteros positivos) para las unidades de la máquina " + (i + 1));
-                    return; // Detener la ejecución si los datos no son válidos
+                    return;
                 }
             }
 
-            // Calcular la producción media
             var sumatoriaDemanda = 0;
             var sumatoriaDias = 0;
 
@@ -173,48 +171,42 @@
                 sumatoriaDias += parseInt(dias[i]);
             }
 
-            var produccionMedia = sumatoriaDemanda / sumatoriaDias;
+            var produccionMedia = Math.ceil(sumatoriaDemanda / sumatoriaDias);
             alert(produccionMedia);
 
-            // Calcular la producción promedio y llenar la tabla de resultados
             var resultadosTabla = document.getElementById("resultadosTabla").getElementsByTagName('tbody')[0];
-            resultadosTabla.innerHTML = ''; // Limpiar la tabla antes de llenarla nuevamente
+            resultadosTabla.innerHTML = '';
 
             for (var i = 0; i < dias.length; i++) {
                 var fila = resultadosTabla.insertRow(i);
                 var mesCell = fila.insertCell(0);
                 mesCell.innerHTML = obtenerNombreMes(i + 1);
 
-                var capacidadTotal = 0; // Inicializar la capacidad total para cada mes
+                var capacidadTotal = 0;
 
-                // Calcular y llenar las celdas de producción para cada máquina
                 for (var j = 1; j <= 3; j++) {
                     var produccion = dias[i] * unidades[j - 1];
-                    capacidadTotal += produccion; // Acumular la producción de cada máquina
+                    capacidadTotal += produccion;
 
                     var produccionCell = fila.insertCell(j);
                     produccionCell.innerHTML = produccion;
                 }
 
-                // Agregar la capacidad total a la última celda de la fila
                 var capacidadTotalCell = fila.insertCell(4);
                 capacidadTotalCell.innerHTML = capacidadTotal;
 
-                // Agregar la columna de stock de seguridad igual a 0 (quinta celda)
                 var stockSeguridadCell = fila.insertCell(5);
                 stockSeguridadCell.innerHTML = 0;
 
-                // Agregar la columna de demanda corregida igual a la demanda (sexta celda)
                 var demandaCorregidaCell = fila.insertCell(6);
                 demandaCorregidaCell.innerHTML = document.getElementById("costo" + (i + 1)).value;
 
-                // Agregar la columna de producción total (séptima celda) utilizando la fórmula produccion media * diasX
                 var produccionTotalCell = fila.insertCell(7);
-                produccionTotalCell.innerHTML = produccionMedia * dias[i];
+                var produccionTotal = produccionMedia * dias[i];
+                produccionTotalCell.innerHTML = produccionTotal;
             }
         }
 
-        // Función auxiliar para obtener el nombre del mes
         function obtenerNombreMes(numeroMes) {
             var meses = [
                 "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
