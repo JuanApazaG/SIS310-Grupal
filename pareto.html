@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Tabla</title>
+</head>
+<body>
+
+    <h2>Generador de Tabla</h2>
+    
+    <label for="numeroFilas">Ingrese un número:</label>
+    <input type="number" id="numeroFilas" min="1" max="100">
+    <button onclick="enviarNumero()">Generar Tabla</button>
+
+    <script>
+        function enviarNumero() {
+            // Obtener el número ingresado por el usuario
+            var numeroFilas = document.getElementById("numeroFilas").value;
+
+            // Verificar si se ingresó un número válido
+            if (numeroFilas <= 0 || isNaN(numeroFilas)) {
+                alert("Por favor, ingrese un número válido.");
+                return;
+            }
+
+            // Redirigir a la página de mostrar.html con el parámetro n
+            window.location.href = "mostrar.html?n=" + numeroFilas;
+        }
+    </script>
+
+</body>
+</html>
