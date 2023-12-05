@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seleccionar Cantidad de Productos</title>
+    <link rel="stylesheet" href="estilo.css">
+    <script src="script.js">
+        
+    </script>
+</head>
+<body>
+    <label for=""><h2>Indicadores financieros</h2></label>
+    <div id="Contenedor">
+        <form>
+            <label for="cantidadProductos">Selecciona la cantidad de productos:</label>
+            <select id="cantidadProductos" name="cantidadProductos">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select>
+            <!-- Llamar a la función seleccionarCantidad() cuando cambie la selección -->
+            <input type="button" value="Seleccionar" onclick="seleccionarCantidad()">
+        </form>
+    </div>
+
+    <!-- Contenedor para la tabla -->
+    <div id="tablaContainer"></div>
+</body>
+</html>

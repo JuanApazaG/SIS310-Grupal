@@ -1,0 +1,111 @@
+body{
+    background-color:#dddddd;
+}
+
+/* Estilos para la tabla original */
+table {
+    border-collapse: collapse;
+    width: 60%;
+    margin: 20px auto;
+}
+
+input{
+    width: 80px;
+    align-items: center;
+}
+
+th, td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+th {
+    background-color: #4caf50; /* Color para las cabeceras */
+    color: white; /* Texto en color blanco para las cabeceras */
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2; /* Color para filas pares */
+}
+
+tr:nth-child(odd) {
+    background-color: #e6e6e6; /* Color para filas impares */
+}
+
+/* Estilos para la tabla clonada */
+#tablaContainer table {
+    border-collapse: collapse;
+    width: 60%;
+    margin: 20px auto;
+}
+
+#tablaContainer th, #tablaContainer td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+#tablaContainer th {
+    background-color: #4caf50;
+    color: white;
+}
+
+#tablaContainer tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#tablaContainer tr:nth-child(odd) {
+    background-color: #e6e6e6;
+}
+
+/* Estilos para el botón */
+button {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: block;
+    margin: 20px auto;
+}
+
+/* Estilos para las barras de Pareto */
+canvas {
+    margin-top: 20px;
+    display: block;
+    margin: 20px auto;
+    max-width: 90%;
+    height: 300px;
+}
+
+/* Colores diferentes para las barras de Pareto */
+.chartjs-render-monitor:nth-child(2) {
+    background-color: rgba(75, 192, 192, 0.5);
+}
+
+.chartjs-render-monitor:nth-child(3) {
+    background-color: rgba(255, 99, 132, 0.5);
+}
+
+/* Estilos para los botones */
+.buttons-container {
+    display: flex;
+    justify-content: center; /* Centrar horizontalmente los elementos flexibles (los botones) */
+    margin-top: 20px; /* Ajusta el margen superior según sea necesario */
+}
+
+.buttons-container button {
+    margin: 0 5px; /* Ajusta el margen entre los botones según sea necesario */
+    padding: 10px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+
+

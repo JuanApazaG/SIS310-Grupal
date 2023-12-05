@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Tabla</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #contenedor {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            margin-bottom: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: lightgreen; /* Cambiado el color de las cabeceras */
+        }
+
+        input {
+            width: 50px; /* Reducido el tamaño de los inputs a 50px */
+            box-sizing: border-box;
+        }
+
+        #resultadoContainer {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Generador de Tabla</h2>
+    <div id="contenedor"><label for="cantidadColumnas">Cantidad de productos:</label>
+        <input type="number" id="cantidadColumnas" value="3">
+        <button onclick="solicitarCabeceras()">Ingresar productos</button>
+        <button onclick="generarTabla()">Generar Tabla</button></div>
+        
+    
+
+    <div id="tablaContainer"></div>
+    <div id="resultadosContainer"></div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>

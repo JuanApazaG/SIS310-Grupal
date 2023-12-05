@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIS-310 - Sistemas y procesos de producción</title>
+    
+    <link rel="stylesheet" href="estilo.css">
+    
+</head>
+<body>
+
+    <center><h2>DIAGRAMA DE PARETO</h2></center>
+
+    
+
+    <div id="tablaContainer"></div>
+    <div class="buttons-container">
+        <button onclick="ordenarTabla()">Ordenar y calcular acumulados</button>
+        <button onclick="actualizarTabla()">Actualizar Tabla</button>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        // Obtener el valor de n de la URL
+        var urlParams = new URLSearchParams(window.location.search);
+        var n = urlParams.get('n');
+
+        // Variable para almacenar la referencia de la tabla ordenada actual
+        var tablaOrdenadaActual;
+
+        // Variable para almacenar la referencia del gráfico actual
+        var graficoActual;
+
+        // Verificar si n es válido
+        if (n <= 0 || isNaN(n)) {
+            alert("Número inválido. Por favor, regrese a la página principal y proporcione un número válido.");
+        } else {
+            // Crear la tabla original
+            generarTabla(n);
+        }
+
+        // Función para generar la tabla
+        function generarTabla(n) {
+            var tablaOriginal = "<table>";
+            tablaOriginal += "<thead><tr><th>N°</th><th>Producto</th><th>Cantidad</th><th>Precio Unitario</th><th>Ventas Totales</th></tr></thead>";
+            tablaOriginal += "<tbody>";
+
+            // Generar filas de la tabla con inputs
+            for (var i = 1; i <= n; i++) {
+                tablaOriginal += "<tr>";
+                tablaOriginal += "<td>" + i + "</td>";
+                tablaOriginal += "<td><input type='text' id='producto" + i + "' placeholder='Producto " + i + "'></td>";
+                tablaOriginal += "<td><input type='number' id='cantidad" + i + "' min='0' oninput='calcularVentasTotales(" + i + ")'></td>";
+                tablaOriginal += "<td><input type='number' id='precio" + i + "' min='0' oninput='calcularVentasTotales(" + i + ")'></td>";
+                tablaOriginal += "<td><input type='number' id='ventas" + i + "' min='0' readonly></td>"; // La columna Ventas Totales es de solo lectura
+                tablaOriginal += "</tr>";
+            }
+
+            tablaOriginal += "</tbody></table>";
+
+            // Mostrar la tabla original en el contenedor
+            document.getElementById("tablaContainer").innerHTML = tablaOriginal;
+        }
+
+        // Función para calcular las Ventas Totales
+        function calcularVentasTotales(index) {
+            var cantidad = parseInt(document.getElementById('cantidad' + index).value) || 0;
+            var precio = parseFloat(document.getElementById('precio' + index).value) || 0;
+            var ventasTotales = cantidad * precio;
+            document.getElementById('ventas' + index).value = ventasTotales.toFixed(2);
+        }
+
+        // Función para ordenar la tabla por Ventas Totales de mayor a menor
+        function ordenarTabla() {
+            // Verificar si ya hay una tabla ordenada y eliminarla
+            if (tablaOrdenadaActual) {
+                tablaOrdenadaActual.remove();
+            }
+
+            // Verificar si ya hay un gráfico y eliminarlo
+            if (graficoActual) {
+                graficoActual.destroy();
+                // Eliminar el canvas del gráfico
+                var canvas = document.querySelector('canvas');
+                if (canvas) {
+                    canvas.remove();
+                }
+            }
+
+            // Obtener la tabla original
+            var tableOriginal = document.querySelector('#tablaContainer table');
+
+            // Clonar la tabla original
+            var tableClone = tableOriginal.cloneNode(true);
+
+            // Obtener el tbody de la tabla clonada
+            var tbodyClone = tableClone.querySelector('tbody');
+
+            // Obtener todas las filas de la tabla clonada
+            var rowsClone = Array.from(tbodyClone.querySelectorAll('tr'));
+
+            // Calcular la sumatoria de Ventas Totales
+            var sumatoriaVentas = Array.from(rowsClone).reduce((sum, row) => {
+                var ventas = parseFloat(row.querySelector('td:last-child input').value) || 0;
+                return sum + ventas;
+            }, 0);
+
+            // Ordenar las filas clonadas por Ventas Totales de mayor a menor
+            rowsClone.sort((a, b) => {
+                var ventasA = parseFloat(a.querySelector('td:last-child input').value);
+                var ventasB = parseFloat(b.querySelector('td:last-child input').value);
+
+                return ventasB - ventasA;
+            });
+
+            // Limpiar el contenido actual de la tabla clonada
+            tbodyClone.innerHTML = "";
+
+            // Inicializar acumulado con el valor de la primera fila
+            var acumulado = 0;
+
+            // Calcular el % acumulado
+            var porcentajeAcumulado = 0;
+
+            // Recorrer las filas y agregar datos a las nuevas columnas
+            rowsClone.forEach((row, index) => {
+                var ventas = parseFloat(row.querySelector('td:last-child input').value) || 0;
+
+                acumulado += ventas;
+
+                // Obtener el campo de "Producto" y agregar la propiedad readonly
+                var productoInput = row.querySelector('td:nth-child(2) input');
+                productoInput.setAttribute('readonly', 'readonly');
+
+                // Eliminar las columnas de "Precio Unitario" y "Cantidad"
+                row.removeChild(row.querySelector('td:nth-child(3)')); // Eliminar la columna "Cantidad"
+                row.removeChild(row.querySelector('td:nth-child(3)')); // Eliminar la columna "Precio Unitario"
+
+                // Añadir el acumulado a la columna correspondiente
+                var acumuladoCell = document.createElement('td');
+                acumuladoCell.textContent = acumulado.toFixed(2);
+                row.appendChild(acumuladoCell);
+
+                porcentajeAcumulado = (acumulado / sumatoriaVentas) * 100;
+
+                // Agregar las nuevas columnas a la fila actual
+                var porcentajeAcumuladoCell = document.createElement('td');
+                porcentajeAcumuladoCell.textContent = porcentajeAcumulado.toFixed(2) + '%';
+                row.appendChild(porcentajeAcumuladoCell);
+
+                // Clonar la fila y agregarla a la tabla clonada
+                var newRow = row.cloneNode(true);
+                tbodyClone.appendChild(newRow);
+            });
+
+            // Eliminar las cabeceras de "Precio Unitario" y "Cantidad" en la tabla clonada
+            tableClone.querySelector('thead th:nth-child(4)').remove(); // Eliminar la cabecera "Cantidad"
+            tableClone.querySelector('thead th:nth-child(3)').remove(); // Eliminar la cabecera "Precio Unitario"
+
+            // Agregar las nuevas cabeceras "Acumulado" y "% Acumulado" al encabezado de la tabla clonada
+            var acumuladoHeader = document.createElement('th');
+            acumuladoHeader.textContent = 'Acumulado';
+            tableClone.querySelector('thead tr').appendChild(acumuladoHeader);
+
+            var porcentajeAcumuladoHeader = document.createElement('th');
+            porcentajeAcumuladoHeader.textContent = '% Acumulado';
+            tableClone.querySelector('thead tr').appendChild(porcentajeAcumuladoHeader);
+
+            // Crear una fila para mostrar la sumatoria de Ventas Totales
+            var sumatoriaRow = document.createElement('tr');
+            var sumatoriaCell = document.createElement('td');
+            sumatoriaCell.colSpan = 2; // Ocupa cinco columnas
+            sumatoriaCell.textContent = 'Sumatoria de Ventas Totales';
+            sumatoriaRow.appendChild(sumatoriaCell);
+
+            var sumatoriaVentasCell = document.createElement('td');
+            sumatoriaVentasCell.colSpan = 2; // Ocupa dos columnas
+            sumatoriaVentasCell.textContent = sumatoriaVentas.toFixed(2);
+            sumatoriaRow.appendChild(sumatoriaVentasCell);
+
+            tbodyClone.appendChild(sumatoriaRow);
+
+            // Crear un nuevo contenedor para la tabla ordenada
+            var newTableContainer = document.createElement('div');
+            newTableContainer.id = 'tablaOrdenadaContainer'; // Asignar un ID al contenedor
+            newTableContainer.appendChild(tableClone);
+
+            // Mostrar la tabla ordenada en el cuerpo del documento
+            document.body.appendChild(newTableContainer);
+
+            // Almacenar la referencia de la tabla ordenada actual
+            tablaOrdenadaActual = newTableContainer;
+
+            // Obtener datos para el diagrama de Pareto
+            var productos = rowsClone.map(row => row.querySelector('td:nth-child(2) input').value);
+            var acumulado = rowsClone.map(row => parseFloat(row.querySelector('td:nth-last-child(2)').textContent));
+            var porcentajeAcumulado = rowsClone.map(row => parseFloat(row.querySelector('td:last-child').textContent));
+
+            // Generar el diagrama de Pareto
+            generarDiagramaPareto(productos, acumulado, porcentajeAcumulado);
+        }
+
+        // Función para generar el diagrama de Pareto
+        function generarDiagramaPareto(productos, acumulado, porcentajeAcumulado) {
+            // Verificar si ya hay un gráfico y eliminarlo
+            if (graficoActual) {
+                graficoActual.destroy();
+            }
+
+            // Eliminar el canvas del gráfico
+            var canvas = document.querySelector('canvas');
+            if (canvas) {
+                canvas.remove();
+            }
+
+            var ctx = document.createElement('canvas');
+            ctx.width = 400;
+            ctx.height = 200;
+            document.body.appendChild(ctx);
+
+            var paretoData = {
+                labels: productos,
+                datasets: [{
+                        type: 'bar',
+                        label: 'Ventas Acumuladas',
+                        data: acumulado,
+                        yAxisID: 'y-axis-1',
+                        backgroundColor: 'rgba(75,192,192,0.5)',
+                    },
+                    {
+                        type: 'line',
+                        label: '% Acumulado',
+                        data: porcentajeAcumulado,
+                        yAxisID: 'y-axis-2',
+                        borderColor: 'rgba(255,99,132,1)',
+                        borderWidth: 2,
+                        fill: false,
+                    },
+                ],
+            };
+
+            var paretoOptions = {
+                scales: {
+                    x: {
+                        ticks: {
+                            beginAtZero: true,
+                        },
+                    },
+                    y: [{
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            id: 'y-axis-1',
+                            label: 'Ventas Acumuladas',
+                        },
+                        {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            id: 'y-axis-2',
+                            label: '% Acumulado',
+                        },
+                    ],
+                },
+            };
+
+            var paretoChart = new Chart(ctx, {
+                type: 'bar',
+                data: paretoData,
+                options: paretoOptions,
+            });
+
+            // Almacenar la referencia del gráfico actual
+            graficoActual = paretoChart;
+        }
+
+        // Función para actualizar la tabla con un nuevo valor de N
+        function actualizarTabla() {
+            // Verificar si ya hay una tabla ordenada y eliminarla
+            if (tablaOrdenadaActual) {
+                tablaOrdenadaActual.remove();
+            }
+
+            // Verificar si ya hay un gráfico y eliminarlo
+            if (graficoActual) {
+                graficoActual.destroy();
+                // Eliminar el canvas del gráfico
+                var canvas = document.querySelector('canvas');
+                if (canvas) {
+                    canvas.remove();
+                }
+            }
+
+            var nuevoN = prompt("Ingrese un nuevo valor de N:");
+            if (nuevoN <= 0 || isNaN(nuevoN)) {
+                alert("Número inválido. Por favor, ingrese un número válido.");
+            } else {
+                // Eliminar la tabla existente
+                var tablaExistente = document.querySelector('#tablaContainer table');
+                if (tablaExistente) {
+                    tablaExistente.remove();
+                }
+
+                // Generar la nueva tabla con el nuevo valor de N
+                generarTabla(nuevoN);
+            }
+        }
+    </script>
+</body>
+</html>
